@@ -2,16 +2,16 @@
 FROM php:8.1.30-zts-bookworm
 
 # Install required dependencies and PHP extensions
-RUN apt-get update && apt-get install -y
-    curl
-    ca-certificates
-    git
-    zip
-    unzip
-    libzip-dev
-    libonig-dev
-    libpng-dev
-    && docker-php-ext-install zip pdo pdo_mysql mbstring exif pcntl bcmath gd
+RUN apt-get update && apt-get install -y \
+    curl \
+    ca-certificates \
+    git \
+    zip \
+    unzip \
+    libzip-dev \
+    libonig-dev \
+    libpng-dev \
+    && docker-php-ext-install zip pdo pdo_mysql mbstring exif pcntl bcmath gd \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
@@ -28,8 +28,8 @@ COPY custom-php.ini /usr/local/etc/php/conf.d
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 # Set appropriate permissions for Laravel storage and cache
-RUN chown -R www-data:www-data /var/www
-    && chmod -R 755 /var/www/storage
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
 # Expose port 9000 for PHP-FPM
